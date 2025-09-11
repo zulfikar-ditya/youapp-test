@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+import { MobileApisModule } from './mobile-apis.module';
 import { CustomValidationPipe } from '@app/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(MobileApisModule);
   app.useGlobalPipes(new CustomValidationPipe());
 
   const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGINS?.split(',') ?? [
@@ -29,7 +29,7 @@ async function bootstrap() {
     credentials: false,
   });
 
-  await app.listen(process.env.APP_BACKEND_PORT ?? 8001);
+  await app.listen(process.env.APP_MOBILE_PORT ?? 8002);
 
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

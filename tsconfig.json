@@ -18,10 +18,24 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@app/common": ["libs/common/src"],
-      "@app/common/*": ["libs/common/src/*"],
-      "@utils/utils": ["libs/utils/src"],
-      "@utils/utils/*": ["libs/utils/src/*"]
+      "@app/common": [
+        "libs/common/src"
+      ],
+      "@app/common/*": [
+        "libs/common/src/*"
+      ],
+      "@repositories/repositories": [
+        "libs/repositories/src"
+      ],
+      "@repositories/repositories/*": [
+        "libs/repositories/src/*"
+      ],
+      "@utils/utils": [
+        "libs/utils/src"
+      ],
+      "@utils/utils/*": [
+        "libs/utils/src/*"
+      ]
     }
   }
 }

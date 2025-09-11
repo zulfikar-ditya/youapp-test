@@ -6,10 +6,88 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  Active
+  Blocked
+  Suspended
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  email     String   @unique
+  password  String
+
+  avatar    String?
+  name      String?
+  gender    String?
+  birthday  DateTime?
+  horoskope String?
+  zodiac    String?
+  height    Float?
+  weight    Float?
+
+  remark    String?
+
+  timestamp DateTime @default(now())
+  status    UserStatus   @default(Active)
+
+  @@index([status])
+  @@index([name])
+  @@index([gender, birthday])
+
+  @@map("users")
+}
+
+model Admin {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  username  String   @unique
+  email     String   @unique
+  password  String
+
+  timestamp DateTime @default(now())
+
+  @@map("admins")
+}
+
+model Interest {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+
+  timestamp DateTime @default(now())
+
+  @@map("interests")
+}
+
+model UserInterest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
+  interestId String   @db.ObjectId
+
+  @@unique([userId, interestId])
+  @@index([interestId])
+
+  @@map("user_interests")
+}
+
+model UserLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  action    String
+  remark    String?
+  ip        String
+
+  timestamp DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+
+  @@map("user_logs")
 }
