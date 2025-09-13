@@ -4,6 +4,7 @@ import { UserInformation, UserRepository } from '@repositories/repositories';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { CacheService } from '../cache/cache.service';
 import { JWTPayload } from '@utils/utils';
+import { USER_CACHE_KEY } from '../cache/const';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JWTPayload): Promise<UserInformation> {
     try {
-      const cacheKey = `user-${payload.id}`;
+      const cacheKey = `${USER_CACHE_KEY}${payload.id}`;
 
       // GET FROM CACHE FIRST, THEN DATABASE
       let user: UserInformation | null = await this.cacheService.get(cacheKey);
@@ -27,7 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (!user) {
           throw new UnauthorizedException('User not found');
         }
-        await this.cacheService.set(cacheKey, user, 3600);
+        await this.cacheService.set(cacheKey, user, null);
       }
 
       return user;
