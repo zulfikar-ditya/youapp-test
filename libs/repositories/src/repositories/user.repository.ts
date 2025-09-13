@@ -24,6 +24,7 @@ export type UserInformation = {
     id: string;
     name: string;
   } | null;
+  interests?: string[];
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -66,6 +67,19 @@ export function UserRepository(tx?: Prisma.TransactionClient) {
             },
           },
 
+          interests: {
+            select: {
+              userId: true,
+              interestId: true,
+              interest: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+
           createdAt: true,
           updatedAt: true,
         },
@@ -82,6 +96,9 @@ export function UserRepository(tx?: Prisma.TransactionClient) {
       return {
         ...data,
         avatar: StrUtils.fileUrlMobile(data.avatar),
+        interests:
+          data.interests?.map((userInterest) => userInterest.interest.name) ||
+          [],
       };
     },
 

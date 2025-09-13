@@ -300,6 +300,14 @@ export class StrUtils {
     return subject.charAt(0).toUpperCase() + subject.slice(1);
   }
 
+  static capitalizeFirstLetter(subject: string): string {
+    return this.ucfirst(subject);
+  }
+
+  static capitalizeWords(subject: string): string {
+    return this.title(subject);
+  }
+
   static ucsplit(subject: string): string[] {
     return subject.split(/(?=[A-Z])/);
   }
