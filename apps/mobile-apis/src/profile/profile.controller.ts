@@ -19,6 +19,7 @@ import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { LoggerUtils } from '@utils/utils';
 import * as fs from 'fs';
+import { UserInterestUpdateDto } from './dtos/user-interest-update.dto';
 
 @Controller({
   path: 'profile',
@@ -26,10 +27,11 @@ import * as fs from 'fs';
 })
 @UseGuards(AuthGuard('jwt'))
 export class ProfileController {
+  // eslint-disable-next-line no-unused-vars
   constructor(private readonly profileService: ProfileService) {}
 
   @Get()
-  async getProfile(@Res() res: Response, @CurrentUser() user: UserInformation) {
+  getProfile(@Res() res: Response, @CurrentUser() user: UserInformation) {
     return res.status(200).json(successResponse(200, 'Profile fetched', user));
   }
 
@@ -74,6 +76,22 @@ export class ProfileController {
         });
       }
 
+      errorResponse(res, error);
+    }
+  }
+
+  @Patch('interests')
+  async updateUserInterest(
+    @Res() res: Response,
+    @CurrentUser() user: UserInformation,
+    @Body() body: UserInterestUpdateDto,
+  ) {
+    try {
+      await this.profileService.updateUserInterest(user, body);
+      return res
+        .status(200)
+        .json(successResponse(200, 'User interests updated', null));
+    } catch (error) {
       errorResponse(res, error);
     }
   }
