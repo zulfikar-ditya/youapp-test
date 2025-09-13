@@ -1,13 +1,16 @@
-import { Controller, Get } from '@nestjs/common';
-import { AdminService } from './admin.service';
+import { successResponse } from '@app/common';
+import { Controller, Get, Res } from '@nestjs/common';
+import { DateUtils } from '@utils/utils';
+import { Response } from 'express';
 
 @Controller()
 export class AdminController {
-  // eslint-disable-next-line no-unused-vars
-  constructor(private readonly adminService: AdminService) {}
-
   @Get()
-  getHello(): string {
-    return this.adminService.getHello();
+  getHello(@Res() res: Response): Response {
+    return res.status(200).send(
+      successResponse(200, 'Admin Service is running', {
+        date: DateUtils.getDateTimeInformativeWithTimezone(DateUtils.now()),
+      }),
+    );
   }
 }

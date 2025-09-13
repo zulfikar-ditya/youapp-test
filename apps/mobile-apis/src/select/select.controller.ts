@@ -8,6 +8,7 @@ import { Response } from 'express';
   version: '1',
 })
 export class SelectController {
+  // eslint-disable-next-line no-unused-vars
   constructor(private readonly selectService: SelectService) {}
 
   @Get('horoscopes')
