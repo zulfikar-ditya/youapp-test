@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { MobileApisModule } from './mobile-apis.module';
 import { CustomValidationPipe } from '@app/common';
+import { VersioningType } from '@nestjs/common';
+import { LoggerUtils } from '@utils/utils';
 
 async function bootstrap() {
   const app = await NestFactory.create(MobileApisModule);
@@ -29,8 +31,15 @@ async function bootstrap() {
     credentials: false,
   });
 
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+
   await app.listen(process.env.APP_MOBILE_PORT ?? 8002);
 
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  LoggerUtils.info(`Application is running on: ${await app.getUrl()}`);
 }
-bootstrap();
+bootstrap().catch((err) => {
+  LoggerUtils.error('Error starting application', err);
+  process.exit(1);
+});

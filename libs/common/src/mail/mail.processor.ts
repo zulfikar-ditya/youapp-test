@@ -2,6 +2,7 @@ import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Injectable } from '@nestjs/common';
 import { Job } from 'bullmq';
 import { MailerService } from '@nestjs-modules/mailer';
+import { LoggerUtils } from '@utils/utils';
 
 interface MailJobData {
   to: string;
@@ -9,12 +10,14 @@ interface MailJobData {
   text?: string;
   html?: string;
   template?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context?: Record<string, any>;
 }
 
 @Processor('mail-queue')
 @Injectable()
 export class MailProcessor extends WorkerHost {
+  // eslint-disable-next-line no-unused-vars
   constructor(private readonly mailerService: MailerService) {
     super();
   }
@@ -27,7 +30,7 @@ export class MailProcessor extends WorkerHost {
       await this.mailerService.sendMail({ to, subject, text, html });
     }
 
-    console.log(
+    LoggerUtils.info(
       `Mail job completed, success send email to ${to} for ${subject}`,
     );
   }

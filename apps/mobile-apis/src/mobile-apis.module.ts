@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MobileApisController } from './mobile-apis.controller';
-import { MobileApisService } from './mobile-apis.service';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [AuthModule],
   controllers: [MobileApisController],
-  providers: [MobileApisService],
+  providers: [],
 })
 export class MobileApisModule {}
