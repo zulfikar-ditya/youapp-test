@@ -1,10 +1,9 @@
 import { HttpException, UnprocessableEntityException } from '@nestjs/common';
-import { DateUtils } from '@utils/utils';
+import { LoggerUtils } from '@utils/utils';
 import { Response } from 'express';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const errorResponse = (res: Response, error: any) => {
-  const date = DateUtils.now().format('YYYY-MM-DD HH:mm:ss');
-
   if (error instanceof HttpException) {
     if (error instanceof UnprocessableEntityException) {
       return res.status(422).json({
@@ -36,9 +35,7 @@ export const errorResponse = (res: Response, error: any) => {
     });
   }
 
-  console.log(`=============${date}==================`);
-  console.error(error);
-  console.log(`=======================================\n`);
+  LoggerUtils.error('Unhandled Exception', error);
 
   return res.status(500).json({
     code: 500,

@@ -14,8 +14,7 @@ export class DateUtils {
   private static _configuredTimezone: string = (() => {
     try {
       return process.env.APP_TIMEZONE ?? 'UTC';
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch {
       return 'UTC';
     }
   })();
@@ -196,26 +195,23 @@ export class DateUtils {
   }
 
   // These methods already accept timezone as a parameter, so we keep them as is
-  static getDateWithTimezone(date: dayjs.Dayjs, timezone: string): string {
-    return date.tz(timezone).format('D MMMM YYYY');
+  static getDateWithTimezone(date: dayjs.Dayjs, tz: string): string {
+    return date.tz(tz).format('D MMMM YYYY');
   }
 
-  static getDateTimeWithTimezone(date: dayjs.Dayjs, timezone: string): string {
-    return date.tz(timezone).format('D MMMM YYYY HH:mm z');
+  static getDateTimeWithTimezone(date: dayjs.Dayjs, tz: string): string {
+    return date.tz(tz).format('D MMMM YYYY HH:mm z');
   }
 
-  static getDateInformativeWithTimezone(
-    date: dayjs.Dayjs,
-    timezone: string,
-  ): string {
-    return date.tz(timezone).format('dddd, MMMM D, YYYY z');
+  static getDateInformativeWithTimezone(date: dayjs.Dayjs, tz: string): string {
+    return date.tz(tz).format('dddd, MMMM D, YYYY z');
   }
 
   static getDateTimeInformativeWithTimezone(
     date: dayjs.Dayjs,
-    timezone: string,
+    tz: string,
   ): string {
-    return date.tz(timezone).format('dddd, MMMM D, YYYY HH:mm z');
+    return date.tz(tz).format('dddd, MMMM D, YYYY HH:mm z');
   }
 
   // Add a utility method to get the configured timezone
