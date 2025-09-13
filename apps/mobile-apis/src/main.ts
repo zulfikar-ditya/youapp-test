@@ -3,9 +3,13 @@ import { MobileApisModule } from './mobile-apis.module';
 import { CustomValidationPipe } from '@app/common';
 import { VersioningType } from '@nestjs/common';
 import { LoggerUtils } from '@utils/utils';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(MobileApisModule);
+  // const app = await NestFactory.create(MobileApisModule);
+  const app =
+    await NestFactory.create<NestExpressApplication>(MobileApisModule);
   app.useGlobalPipes(new CustomValidationPipe());
 
   const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGINS?.split(',') ?? [
@@ -22,6 +26,10 @@ async function bootstrap() {
     'Content-Type',
     'Authorization',
   ];
+
+  app.useStaticAssets(join(__dirname, '../../../', ''), {
+    prefix: '/uploads/',
+  });
 
   app.enableCors({
     origin: ALLOWED_ORIGIN,

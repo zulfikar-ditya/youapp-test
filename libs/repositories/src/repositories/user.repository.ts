@@ -1,6 +1,7 @@
 import { Prisma, UserStatus } from '@prisma/client';
 import { prisma } from '..';
 import { UnauthorizedException } from '@nestjs/common';
+import { StrUtils } from '@utils/utils';
 
 export type UserInformation = {
   id: string;
@@ -55,7 +56,10 @@ export function UserRepository(tx?: Prisma.TransactionClient) {
         throw new UnauthorizedException(`Your account is ${data.status}`);
       }
 
-      return data;
+      return {
+        ...data,
+        avatar: StrUtils.fileUrlMobile(data.avatar),
+      };
     },
 
     async findUsernameOrEmail(user: string): Promise<{

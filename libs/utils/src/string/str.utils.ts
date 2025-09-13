@@ -348,4 +348,22 @@ export class StrUtils {
   static wrap(subject: string, before: string, after?: string): string {
     return `${before}${subject}${after ?? before}`;
   }
+
+  static fileUrlMobile(path: string | null): string | null {
+    if (!path) return null;
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+    return `${process.env.APP_MOBILE_URL}/uploads/${path}`;
+  }
+
+  static fileUrlRemoveMobile(path: string | null): string | null {
+    if (!path) return null;
+
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return this.afterLast(path, '/uploads/');
+    }
+
+    return path;
+  }
 }
