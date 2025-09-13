@@ -11,13 +11,21 @@ export type UserInformation = {
   name?: string | null;
   gender?: string | null;
   birthday?: Date | null;
-  horoskope?: string | null;
-  zodiac?: string | null;
   height?: number | null;
   weight?: number | null;
-  remark?: string | null;
-  timestamp: Date;
   status: UserStatus;
+  horoscopeId?: string | null;
+  horoscope?: {
+    id: string;
+    name: string;
+  } | null;
+  zodiacId?: string | null;
+  zodiac?: {
+    id: string;
+    name: string;
+  } | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
 };
 
 export function UserRepository(tx?: Prisma.TransactionClient) {
@@ -38,13 +46,28 @@ export function UserRepository(tx?: Prisma.TransactionClient) {
           name: true,
           gender: true,
           birthday: true,
-          horoskope: true,
-          zodiac: true,
           height: true,
           weight: true,
-          remark: true,
-          timestamp: true,
           status: true,
+
+          horoscopeId: true,
+          horoscope: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+
+          zodiacId: true,
+          zodiac: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+
+          createdAt: true,
+          updatedAt: true,
         },
       });
 

@@ -29,19 +29,26 @@ model User {
   name      String?
   gender    String?
   birthday  DateTime?
-  horoskope String?
-  zodiac    String?
   height    Float?
   weight    Float?
 
   remark    String?
 
-  timestamp DateTime @default(now())
+  // relations
+  horoscopeId String?   @db.ObjectId
+  horoscope   Horoscope? @relation(fields: [horoscopeId], references: [id])
+  zodiacId    String?   @db.ObjectId
+  zodiac      Zodiac?   @relation(fields: [zodiacId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   status    UserStatus   @default(Active)
 
   @@index([status])
   @@index([name])
   @@index([gender, birthday])
+  @@index([horoscopeId])
+  @@index([zodiacId])
 
   @@map("users")
 }
@@ -52,7 +59,8 @@ model Admin {
   email     String   @unique
   password  String
 
-  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("admins")
 }
@@ -61,20 +69,30 @@ model Interest {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   name      String   @unique
 
-  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("interests")
 }
 
-model UserInterest {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId     String   @db.ObjectId
-  interestId String   @db.ObjectId
+model Horoscope {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([userId, interestId])
-  @@index([interestId])
+  @@map("horoscopes")
+}
 
-  @@map("user_interests")
+model Zodiac {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String   @unique
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("zodiacs")
 }
 
 model UserLog {
@@ -84,7 +102,8 @@ model UserLog {
   remark    String?
   ip        String
 
-  timestamp DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([action])

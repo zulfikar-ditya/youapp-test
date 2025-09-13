@@ -18,11 +18,11 @@ export class UpdateProfileDto {
 
   @IsString()
   @IsOptional()
-  horoskope?: string;
+  horoscopeId?: string;
 
   @IsString()
   @IsOptional()
-  zodiac?: string;
+  zodiacId?: string;
 
   @IsOptional()
   @IsNumber()

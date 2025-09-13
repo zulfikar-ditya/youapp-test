@@ -5,6 +5,7 @@ import { ProfileModule } from './profile/profile.module';
 import { CacheModule, CommonModule } from '@app/common';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@app/common/strategies/jwt.strategy';
+import { SelectModule } from './select/select.module';
 
 @Module({
   imports: [
@@ -18,6 +19,8 @@ import { JwtStrategy } from '@app/common/strategies/jwt.strategy';
       secret: process.env.JWT_SECRET || 'default-secret',
       signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
     }),
+
+    SelectModule,
   ],
   controllers: [MobileApisController],
   providers: [JwtStrategy],
